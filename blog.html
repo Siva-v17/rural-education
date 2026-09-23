@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Stackly Rural Education Foundation</title>
+<meta name="description" content="Stories from the field — teachers, classrooms and villages across rural India.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+:root{
+  --clay:#C1622D; --clay-dark:#9A4A1E; --clay-light:#E8935B;
+  --sage:#3F5D3A; --sage-dark:#243D22; --sage-light:#6E8C63;
+  --cream:#FBF4E7; --cream-warm:#F3E4C6; --paper:#FFFDF9;
+  --ink:#241C14; --ink-soft:#5B5142;
+  --gold:#D9A441;
+  --serif:'Fraunces', serif; --sans:'Manrope', sans-serif;
+  --maxw:1240px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--sans);color:var(--ink);background:var(--cream);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+img{max-width:100%;display:block;}
+a{text-decoration:none;color:inherit;}
+ul{list-style:none;}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;color:var(--sage-dark);line-height:1.08;letter-spacing:-0.01em;}
+p{line-height:1.7;color:var(--ink-soft);}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:100px;font-weight:700;font-size:15px;cursor:pointer;border:none;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;}
+.btn-clay{background:var(--clay);color:var(--cream);box-shadow:0 10px 30px -10px rgba(193,98,45,.55);}
+.btn-clay:hover{transform:translateY(-3px);box-shadow:0 16px 34px -10px rgba(193,98,45,.65);}
+.btn-outline{background:transparent;color:var(--sage-dark);border:1.5px solid var(--sage-dark);}
+.btn-outline:hover{background:var(--sage-dark);color:var(--cream);}
+.btn-light{background:var(--cream);color:var(--sage-dark);}
+.btn-light:hover{transform:translateY(-3px);}
+
+/* preloader */
+#preloader{position:fixed;inset:0;background:var(--sage-dark);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;}
+#preloader .mark{font-family:var(--serif);font-size:15px;color:var(--cream-warm);letter-spacing:.3em;}
+#preloader .bar{width:200px;height:2px;background:rgba(251,244,231,.2);position:relative;overflow:hidden;border-radius:2px;}
+#preloader .bar span{position:absolute;left:0;top:0;bottom:0;width:0%;background:var(--gold);}
+
+/* nav */
+header{position:fixed;top:0;left:0;right:0;z-index:900;padding:22px 0;transition:background .4s,padding .4s,box-shadow .4s;}
+header.scrolled{background:rgba(251,244,231,.92);backdrop-filter:blur(14px);padding:14px 0;box-shadow:0 6px 24px rgba(36,28,20,.06);}
+nav{display:flex;align-items:center;justify-content:space-between;}
+.logo img{height:70px;width:auto;}
+.navlinks{display:flex;gap:38px;align-items:center;}
+.navlinks a{font-size:14.5px;font-weight:600;color:var(--sage-dark);position:relative;padding:4px 0;}
+.navlinks a::after{content:'';position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--clay);transition:width .35s;}
+.navlinks a:hover::after{width:100%;}
+.navcta{display:flex;gap:14px;align-items:center;}
+.navcta .btn{padding:12px 24px;font-size:13.5px;}
+.hamb{display:none;flex-direction:column;gap:5px;cursor:pointer;z-index:950;}
+.hamb span{width:26px;height:2px;background:var(--sage-dark);border-radius:2px;transition:.3s;}
+
+/* mobile menu */
+.mobilemenu{position:fixed;inset:0;background:var(--sage-dark);z-index:940;display:flex;flex-direction:column;justify-content:center;padding:40px;transform:translateY(-100%);transition:transform .5s cubic-bezier(.6,0,.2,1);}
+.mobilemenu.open{transform:translateY(0);}
+.mobilemenu a{display:block;font-family:var(--serif);font-size:38px;color:var(--cream);margin:14px 0;}
+.mm-close{position:absolute;top:34px;right:34px;width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(251,244,231,.35);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:border-color .3s,transform .3s;}
+.mm-close:hover{border-color:var(--cream);transform:rotate(90deg);}
+.mm-close span{position:absolute;width:18px;height:2px;background:var(--cream);border-radius:2px;}
+.mm-close span:first-child{transform:rotate(45deg);}
+.mm-close span:last-child{transform:rotate(-45deg);}
+
+/* hero */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:150px 0 80px;overflow:hidden;background:linear-gradient(180deg,#FBF4E7 0%,#F3E4C6 100%);}
+.blob{position:absolute;border-radius:42% 58% 65% 35%/45% 40% 60% 55%;filter:blur(2px);opacity:.55;z-index:0;}
+.blob1{width:520px;height:520px;background:radial-gradient(circle at 30% 30%,var(--clay-light),var(--clay));top:-140px;right:-140px;}
+.blob2{width:340px;height:340px;background:radial-gradient(circle at 30% 30%,var(--sage-light),var(--sage));bottom:-100px;left:-120px;opacity:.35;}
+.hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;}
+.eyebrow-row{display:flex;align-items:center;gap:12px;margin-bottom:22px;}
+.eyebrow-dot{width:8px;height:8px;border-radius:50%;background:var(--clay);}
+.eyebrow-row span{font-size:13.5px;font-weight:700;color:var(--clay-dark);}
+.hero h1{font-size:clamp(40px,5.4vw,72px);}
+.hero h1 .line{display:block;overflow:hidden;}
+.hero h1 .line span{display:inline-block;}
+.hero h1 em{font-style:italic;color:var(--clay);}
+.hero p.lead{font-size:18px;max-width:480px;margin:26px 0 34px;}
+.hero-btns{display:flex;gap:16px;flex-wrap:wrap;}
+.hero-visual{position:relative;}
+.hero-visual .frame{position:relative;border-radius:26px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(36,28,20,.35);}
+.hero-visual img{width:100%;height:560px;object-fit:cover;}
+.floatcard{position:absolute;background:var(--paper);border-radius:18px;padding:18px 20px;box-shadow:0 20px 45px -18px rgba(36,28,20,.25);display:flex;gap:14px;align-items:center;}
+.floatcard .num{font-family:var(--serif);font-size:26px;color:var(--clay);font-weight:700;}
+.floatcard .lbl{font-size:12px;color:var(--ink-soft);line-height:1.3;}
+.fc1{top:36px;left:-38px;}
+.fc2{bottom:30px;right:-30px;}
+.scrolldown{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;z-index:3;}
+.scrolldown .line{width:1px;height:44px;background:var(--sage-dark);opacity:.4;position:relative;overflow:hidden;}
+.scrolldown .line i{position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--clay);animation:sdmove 1.8s ease-in-out infinite;}
+@keyframes sdmove{0%{top:-100%;}60%{top:100%;}100%{top:100%;}}
+
+/* section basics */
+section{padding:120px 0;position:relative;}
+.sec-head{max-width:640px;margin-bottom:64px;}
+.sec-head .kicker{color:var(--clay-dark);font-weight:700;font-size:13.5px;margin-bottom:14px;display:block;}
+.sec-head h2{font-size:clamp(30px,3.4vw,46px);}
+.sec-head p{margin-top:16px;font-size:16.5px;}
+
+/* mission split */
+.mission{background:var(--paper);}
+.mission-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:70px;align-items:center;}
+.mission-imgs{position:relative;height:520px;}
+.mission-imgs img{position:absolute;border-radius:20px;object-fit:cover;box-shadow:0 30px 60px -25px rgba(36,28,20,.3);}
+.mi1{width:72%;height:78%;top:0;left:0;z-index:2;}
+.mi2{width:56%;height:52%;bottom:0;right:0;z-index:1;border:6px solid var(--paper);}
+.stat-row{display:flex;gap:40px;margin-top:44px;flex-wrap:wrap;}
+.stat-item .num{font-family:var(--serif);font-size:44px;color:var(--sage-dark);font-weight:700;}
+.stat-item .num span{color:var(--clay);}
+.stat-item .lbl{font-size:13.5px;color:var(--ink-soft);margin-top:4px;}
+
+/* programs */
+.programs{background:var(--cream);}
+.prog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.prog-card{background:var(--paper);border-radius:22px;overflow:hidden;box-shadow:0 18px 40px -22px rgba(36,28,20,.2);transition:transform .5s cubic-bezier(.2,.8,.2,1);}
+.prog-card:hover{transform:translateY(-10px);}
+.prog-card .ph{height:230px;overflow:hidden;}
+.prog-card .ph img{width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.8,.2,1);}
+.prog-card:hover .ph img{transform:scale(1.08);}
+.prog-card .pb{padding:26px 26px 30px;}
+.prog-card .pb .tag{font-size:12px;font-weight:700;color:var(--clay);margin-bottom:8px;display:block;}
+.prog-card .pb h3{font-size:21px;margin-bottom:10px;}
+.prog-card .pb p{font-size:14.5px;}
+.prog-card .pb .more{margin-top:16px;font-size:13.5px;font-weight:700;color:var(--sage-dark);display:inline-flex;align-items:center;gap:6px;}
+
+/* process */
+.process{background:var(--sage-dark);color:var(--cream);}
+.process .sec-head h2,.process .sec-head p{color:var(--cream);}
+.process .sec-head p{color:rgba(251,244,231,.7);}
+.proc-row{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.proc-item{padding:34px 26px;border:1px solid rgba(251,244,231,.16);border-radius:20px;position:relative;}
+.proc-item .pnum{font-family:var(--serif);font-size:15px;color:var(--gold);margin-bottom:22px;}
+.proc-item h4{color:var(--cream);font-size:19px;margin-bottom:10px;}
+.proc-item p{color:rgba(251,244,231,.65);font-size:14px;}
+
+/* gallery */
+.gallery{background:var(--paper);}
+.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:140px;gap:14px;}
+.gal-grid .g{border-radius:16px;overflow:hidden;position:relative;}
+.gal-grid .g img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+.gal-grid .g:hover img{transform:scale(1.1);}
+.g1{grid-column:span 2;grid-row:span 2;}
+.g4{grid-column:span 2;}
+.g6{grid-row:span 2;}
+
+/* testimonials */
+.testi{background:var(--cream-warm);}
+.testi-wrap{position:relative;max-width:760px;margin:0 auto;text-align:center;}
+.testi-slide{display:none;}
+.testi-slide.active{display:block;}
+.testi-slide p{font-family:var(--serif);font-size:26px;color:var(--sage-dark);line-height:1.5;font-style:italic;}
+.testi-who{margin-top:26px;display:flex;align-items:center;justify-content:center;gap:14px;}
+.testi-who img{width:52px;height:52px;border-radius:50%;object-fit:cover;}
+.testi-who .n{font-weight:700;font-size:14.5px;color:var(--ink);}
+.testi-who .r{font-size:12.5px;color:var(--ink-soft);}
+.testi-dots{display:flex;gap:10px;justify-content:center;margin-top:34px;}
+.testi-dots span{width:9px;height:9px;border-radius:50%;background:var(--sage-light);opacity:.4;cursor:pointer;transition:.3s;}
+.testi-dots span.active{opacity:1;background:var(--clay);width:24px;border-radius:6px;}
+
+/* blog */
+.blog-prev{background:var(--cream);}
+.bp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.bp-card{background:var(--paper);border-radius:20px;overflow:hidden;box-shadow:0 16px 36px -22px rgba(36,28,20,.2);}
+.bp-card img{width:100%;height:190px;object-fit:cover;}
+.bp-body{padding:22px 24px 26px;}
+.bp-body .date{font-size:12px;color:var(--clay-dark);font-weight:700;}
+.bp-body h3{font-size:18.5px;margin:10px 0 8px;}
+.bp-body p{font-size:14px;}
+
+/* partners */
+.partners{padding:70px 0;background:var(--paper);border-top:1px solid rgba(36,28,20,.08);border-bottom:1px solid rgba(36,28,20,.08);}
+.partners .p-label{text-align:center;font-size:12.5px;font-weight:700;color:var(--ink-soft);letter-spacing:.06em;margin-bottom:36px;}
+.marquee{overflow:hidden;position:relative;}
+.marquee-track{display:flex;gap:70px;width:max-content;align-items:center;}
+.marquee-track span{font-family:var(--serif);font-size:24px;color:var(--ink-soft);opacity:.55;white-space:nowrap;}
+
+/* cta band */
+.ctaband{background:var(--clay);color:var(--cream);text-align:center;padding:100px 0;position:relative;overflow:hidden;}
+.ctaband h2{color:var(--cream);font-size:clamp(28px,3.6vw,44px);max-width:680px;margin:0 auto 20px;}
+.ctaband p{color:rgba(251,244,231,.85);max-width:520px;margin:0 auto 36px;}
+.ctaband .btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+
+/* newsletter */
+.news{background:var(--sage-dark);color:var(--cream);}
+.news-grid{display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;}
+.news h3{color:var(--cream);font-size:26px;}
+.news p{color:rgba(251,244,231,.7);margin-top:8px;}
+.news form{display:flex;gap:10px;}
+.news input{padding:15px 20px;border-radius:100px;border:none;min-width:260px;font-family:var(--sans);font-size:14px;}
+
+/* footer */
+footer{background:var(--ink);color:rgba(251,244,231,.8);padding:80px 0 30px;}
+.foot-grid{display:grid;grid-template-columns:1.3fr .85fr .85fr .85fr 1.05fr;gap:40px 28px;margin-bottom:44px;}
+.foot-brand img{height:70px;margin-bottom:14px;}
+.foot-tag{font-size:11.5px;letter-spacing:.16em;color:var(--gold);font-weight:700;margin-bottom:16px;}
+.foot-brand p{color:rgba(251,244,231,.55);font-size:14px;max-width:280px;}
+.foot-col h4{color:var(--gold);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;font-family:var(--sans);font-weight:700;}
+.foot-col .rule{width:26px;height:2px;background:var(--gold);opacity:.5;margin-bottom:18px;border-radius:2px;}
+.foot-col a{display:block;color:rgba(251,244,231,.6);font-size:14px;margin-bottom:12px;transition:color .3s,transform .3s;}
+.foot-col a:hover{color:var(--gold);transform:translateX(3px);}
+.foot-contact a{display:flex;align-items:center;gap:10px;color:rgba(251,244,231,.7);font-size:13.5px;margin-bottom:14px;}
+.foot-contact a svg{flex-shrink:0;color:var(--gold);}
+.foot-cta{background:rgba(251,244,231,.05);border:1px solid rgba(251,244,231,.14);border-radius:16px;padding:20px;margin-top:20px;}
+.foot-cta .cta-icon{width:38px;height:38px;border-radius:9px;background:rgba(217,164,65,.16);display:flex;align-items:center;justify-content:center;color:var(--gold);margin-bottom:12px;}
+.foot-cta h5{color:var(--cream);font-size:14.5px;font-family:var(--sans);font-weight:700;line-height:1.35;margin-bottom:6px;}
+.foot-cta p{color:rgba(251,244,231,.55);font-size:12.5px;line-height:1.5;}
+.foot-cta .arrow{display:inline-flex;align-items:center;gap:6px;color:var(--gold);font-size:12.5px;font-weight:700;margin-top:10px;transition:gap .3s;}
+.foot-cta .arrow:hover{gap:10px;}
+.foot-trust{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:30px;padding:34px 0;border-top:1px solid rgba(251,244,231,.12);border-bottom:1px solid rgba(251,244,231,.12);margin-bottom:34px;}
+.trust-badge{display:flex;align-items:center;gap:14px;max-width:250px;}
+.trust-badge .ico{width:46px;height:46px;border-radius:12px;border:1.5px solid rgba(217,164,65,.4);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;}
+.trust-badge strong{display:block;color:var(--cream);font-size:14.5px;font-family:var(--sans);}
+.trust-badge span{display:block;font-size:12.5px;color:rgba(251,244,231,.5);margin-top:2px;line-height:1.4;}
+.foot-stat-row{display:flex;gap:34px;flex-wrap:wrap;}
+.foot-stat-item{text-align:center;}
+.foot-stat-item .ico{color:var(--gold);margin-bottom:6px;}
+.foot-stat-item strong{display:block;font-family:var(--serif);font-size:24px;color:var(--cream);font-weight:600;}
+.foot-stat-item span{display:block;font-size:12px;color:rgba(251,244,231,.5);margin-top:2px;}
+.foot-newsletter h5{color:var(--gold);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;font-family:var(--sans);font-weight:700;margin-bottom:10px;}
+.foot-newsletter p{color:rgba(251,244,231,.55);font-size:13px;max-width:280px;margin-bottom:16px;}
+.foot-newsletter form{display:flex;gap:8px;}
+.foot-newsletter input{padding:13px 16px;border-radius:100px;border:1px solid rgba(251,244,231,.2);background:rgba(251,244,231,.06);color:var(--cream);min-width:190px;font-family:var(--sans);font-size:13.5px;}
+.foot-newsletter input::placeholder{color:rgba(251,244,231,.4);}
+.foot-newsletter button{white-space:nowrap;padding:13px 22px;}
+.foot-bottom{padding-top:0;display:flex;justify-content:space-between;font-size:13px;color:rgba(251,244,231,.45);flex-wrap:wrap;gap:14px;align-items:center;}
+.foot-bottom .pay{display:flex;align-items:center;gap:12px;}
+.foot-bottom .pay-icons{display:flex;gap:8px;}
+.foot-bottom .pay-icons span{border:1px solid rgba(251,244,231,.18);border-radius:6px;padding:5px 9px;font-size:11px;font-weight:700;color:rgba(251,244,231,.65);letter-spacing:.03em;}
+.social{display:flex;gap:14px;}
+.social a{width:36px;height:36px;border-radius:50%;border:1px solid rgba(251,244,231,.2);display:flex;align-items:center;justify-content:center;font-size:13px;}
+
+/* reveal utility */
+.reveal{opacity:0;transform:translateY(40px);}
+
+@media (max-width:1000px){
+  .hero-grid{grid-template-columns:1fr;}
+  .hero-visual{order:-1;}
+  .hero-visual img{height:400px;}
+  .mission-grid{grid-template-columns:1fr;}
+  .prog-grid{grid-template-columns:repeat(2,1fr)}
+  .proc-row{grid-template-columns:repeat(2,1fr)}
+  .gal-grid{grid-template-columns:repeat(3,1fr)}
+  .bp-grid{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:1fr 1fr}
+  .news-grid{grid-template-columns:1fr}
+  .foot-trust{justify-content:flex-start;}
+}
+@media (max-width:760px){
+  .navlinks,.navcta{display:none;}
+  .hamb{display:flex;}
+  .wrap{padding:0 20px;}
+  section{padding:80px 0;}
+  .prog-grid,.proc-row,.bp-grid{grid-template-columns:1fr;}
+  .gal-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:120px;}
+  .g1{grid-column:span 2;grid-row:span 1;}
+  .foot-grid{grid-template-columns:1fr;}
+  .fc1,.fc2{display:none;}
+  .stat-row{gap:26px;}
+  .news form{flex-direction:column;width:100%;}
+  .news input{min-width:0;width:100%;}
+  .foot-stat-row{gap:22px;justify-content:space-between;width:100%;}
+  .foot-newsletter form{flex-direction:column;width:100%;}
+  .foot-newsletter input{min-width:0;width:100%;}
+  .foot-bottom{flex-direction:column;align-items:flex-start;}
+}
+
+.pagehero{position:relative;padding:170px 0 70px;background:linear-gradient(180deg,#FBF4E7,#F3E4C6);overflow:hidden;}
+.pagehero .blob{position:absolute;border-radius:45% 55% 60% 40%/50% 45% 55% 50%;opacity:.4;}
+.pagehero .b1{width:420px;height:420px;background:radial-gradient(circle at 30% 30%,var(--sage-light),var(--sage));top:-160px;left:-100px;}
+.pagehero h1{font-size:clamp(36px,5vw,60px);max-width:760px;}
+.pagehero .split-line{display:block;overflow:hidden;}
+.pagehero .split-line span{display:inline-block;}
+.crumb{font-size:13px;font-weight:700;color:var(--clay-dark);margin-bottom:18px;display:block;}
+
+.featured{background:var(--paper);}
+.feat-card{display:grid;grid-template-columns:1.1fr .9fr;border-radius:26px;overflow:hidden;box-shadow:0 30px 60px -26px rgba(36,28,20,.3);background:var(--cream);}
+.feat-card img{width:100%;height:100%;object-fit:cover;min-height:380px;}
+.feat-txt{padding:50px;display:flex;flex-direction:column;justify-content:center;}
+.feat-txt .date{font-size:12.5px;font-weight:700;color:var(--clay-dark);}
+.feat-txt h2{font-size:30px;margin:14px 0 16px;}
+.feat-txt p{font-size:15px;}
+
+.blog-filters{background:var(--cream);padding:50px 0 0;}
+.filter-row{display:flex;gap:12px;flex-wrap:wrap;}
+.filter-btn{padding:11px 22px;border-radius:100px;border:1.5px solid rgba(36,28,20,.16);background:transparent;font-family:var(--sans);font-weight:700;font-size:13.5px;color:var(--ink-soft);cursor:pointer;transition:.3s;}
+.filter-btn.active,.filter-btn:hover{background:var(--sage-dark);color:var(--cream);border-color:var(--sage-dark);}
+
+.blog-grid-sec{background:var(--cream);}
+.bg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.bcard{background:var(--paper);border-radius:20px;overflow:hidden;box-shadow:0 16px 36px -22px rgba(36,28,20,.2);}
+.bcard .ph{height:200px;overflow:hidden;}
+.bcard .ph img{width:100%;height:100%;object-fit:cover;transition:transform .6s;}
+.bcard:hover .ph img{transform:scale(1.08);}
+.bcard .bb{padding:24px 24px 28px;}
+.bcard .cat{font-size:11.5px;font-weight:700;color:var(--clay);text-transform:none;}
+.bcard h3{font-size:18px;margin:10px 0 8px;}
+.bcard p{font-size:14px;}
+.bcard .meta{display:flex;justify-content:space-between;margin-top:16px;font-size:12px;color:var(--ink-soft);border-top:1px solid rgba(36,28,20,.1);padding-top:14px;}
+
+.pagi{display:flex;justify-content:center;gap:10px;margin-top:56px;}
+.pagi button{width:42px;height:42px;border-radius:50%;border:1.5px solid rgba(36,28,20,.16);background:var(--paper);font-weight:700;cursor:pointer;color:var(--ink-soft);}
+.pagi button.active{background:var(--clay);color:var(--cream);border-color:var(--clay);}
+
+</style>
+</head>
+<body>
+
+<div id="preloader"><div class="mark">STACKLY · BLOG</div><div class="bar"><span></span></div></div>
+<header id="siteheader">
+  <nav class="wrap">
+    <a href="index.html" class="logo"><img src="./stackly.png" alt="Stackly"></a>
+    <div class="navlinks">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="program.html">Programs</a>
+      <a href="blog.html" style="color:var(--clay);">Blog</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="navcta">
+      <a href="login.html" class="btn btn-outline">Log in</a>
+      <a href="contact.html#donate" class="btn btn-clay">Donate</a>
+    </div>
+    <div class="hamb" id="hamb"><span></span><span></span><span></span></div>
+  </nav>
+</header>
+
+<div class="mobilemenu" id="mobilemenu">
+  <div class="mm-close" id="mmClose"><span></span><span></span></div>
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="program.html">Programs</a>
+  <a href="blog.html">Blog</a>
+  <a href="contact.html">Contact</a>
+  <a href="login.html">Log in</a>
+</div>
+
+
+<section class="pagehero">
+  <div class="blob b1"></div>
+  <div class="wrap">
+    <span class="crumb">Field notes</span>
+    <h1><span class="split-line"><span>Stories from the</span></span> <span class="split-line"><span>villages we work in.</span></span></h1>
+  </div>
+</section>
+
+<section class="featured">
+  <div class="wrap">
+    <a href="#" class="feat-card reveal">
+      <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1400&q=80" alt="Children in a rural classroom">
+      <div class="feat-txt">
+        <span class="date">Featured · March 2026</span>
+        <h2>Eighteen thousand children later, what we'd do differently</h2>
+        <p>Twelve years and forty-two schools in, our founder reflects on the mistakes, the surprises, and the one thing she'd never change about how we build.</p>
+        <span class="btn btn-outline" style="width:fit-content;margin-top:20px;">Read the story</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="blog-prev" style="padding:70px 0 20px;">
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin-bottom:36px;">
+      <span class="kicker">Editor's picks</span>
+      <h2 style="font-size:clamp(24px,2.6vw,32px);">Where to start if you're new here</h2>
+    </div>
+    <div class="bp-grid">
+      <a href="#" class="bp-card reveal">
+        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=700&q=80" alt="How we choose a village">
+        <div class="bp-body">
+          <span class="date">Community · 6 min read</span>
+          <h3>How we choose a village</h3>
+          <p>The unglamorous checklist behind every new school — roads, rainfall, and who shows up to the first meeting.</p>
+        </div>
+      </a>
+      <a href="#" class="bp-card reveal">
+        <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=700&q=80" alt="What a rupee actually buys">
+        <div class="bp-body">
+          <span class="date">Transparency · 5 min read</span>
+          <h3>What a rupee actually buys</h3>
+          <p>A line-by-line look at where a typical donation goes, from cement to chalkboards.</p>
+        </div>
+      </a>
+      <a href="#" class="bp-card reveal">
+        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=700&q=80" alt="The fellowship, one year in">
+        <div class="bp-body">
+          <span class="date">Teachers · 7 min read</span>
+          <h3>The fellowship, one year in</h3>
+          <p>Three fellows on what changed for them — and what they'd tell the next cohort before they start.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="blog-filters">
+  <div class="wrap">
+    <div class="filter-row">
+      <button class="filter-btn active" data-f="all">All stories</button>
+      <button class="filter-btn" data-f="teachers">Teachers</button>
+      <button class="filter-btn" data-f="construction">Construction</button>
+      <button class="filter-btn" data-f="libraries">Libraries</button>
+      <button class="filter-btn" data-f="nutrition">Nutrition</button>
+      <button class="filter-btn" data-f="digital">Digital</button>
+      <button class="filter-btn" data-f="community">Community</button>
+      <button class="filter-btn" data-f="scholarships">Scholarships</button>
+    </div>
+  </div>
+</section>
+
+<section class="blog-grid-sec">
+  <div class="wrap">
+    <div class="bg-grid" id="bgrid">
+      <div class="bcard reveal" data-cat="teachers">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=700&q=80" alt="Inside the teacher fellowship"></div>
+  <div class="bb"><span class="cat">Teachers</span><h3>Inside the teacher fellowship</h3><p>Two years, one classroom, and the promise of a career at home for young graduates.</p><div class="meta"><span>Feb 2026</span><span>6 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="construction">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=700&q=80" alt="Building school number forty-two"></div>
+  <div class="bb"><span class="cat">Construction</span><h3>Building school number forty-two</h3><p>A look at how a village in Odisha finally got its first classroom.</p><div class="meta"><span>Jan 2026</span><span>5 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="libraries">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=700&q=80" alt="Why mother-tongue reading changes everything"></div>
+  <div class="bb"><span class="cat">Libraries</span><h3>Why mother-tongue reading changes everything</h3><p>Children who learn to read in their first language pick up a second language faster.</p><div class="meta"><span>Mar 2026</span><span>4 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="nutrition">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=700&q=80" alt="One hot meal, forty fewer absences"></div>
+  <div class="bb"><span class="cat">Nutrition</span><h3>One hot meal, forty fewer absences</h3><p>How the midday meal programme in Jharkhand cut monthly absenteeism by a third.</p><div class="meta"><span>Dec 2025</span><span>5 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="digital">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1517420704952-d9f39e95b43e?auto=format&fit=crop&w=700&q=80" alt="Solar power, offline lessons"></div>
+  <div class="bb"><span class="cat">Digital</span><h3>Solar power, offline lessons</h3><p>Inside the tablet lab keeping a school running without a grid connection.</p><div class="meta"><span>Nov 2025</span><span>7 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="community">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=700&q=80" alt="What a village council actually asks for"></div>
+  <div class="bb"><span class="cat">Community</span><h3>What a village council actually asks for</h3><p>Notes from twelve years of listening before we build anything.</p><div class="meta"><span>Oct 2025</span><span>6 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="teachers">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1544717297-fa95b6ee9643?auto=format&fit=crop&w=700&q=80" alt="Meet Manoj: student, then teacher"></div>
+  <div class="bb"><span class="cat">Teachers</span><h3>Meet Manoj: student, then teacher</h3><p>He walked ten kilometres to school. Now he teaches in the same building.</p><div class="meta"><span>Sep 2025</span><span>4 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="scholarships">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?auto=format&fit=crop&w=700&q=80" alt="Forty students, one graduating class"></div>
+  <div class="bb"><span class="cat">Scholarships</span><h3>Forty students, one graduating class</h3><p>The first cohort of our secondary scholarship programme finishes school this spring.</p><div class="meta"><span>Aug 2025</span><span>5 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="construction">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=700&q=80" alt="Designing for a monsoon climate"></div>
+  <div class="bb"><span class="cat">Construction</span><h3>Designing for a monsoon climate</h3><p>Why our classroom roofs look different in Kerala than in Rajasthan.</p><div class="meta"><span>Jul 2025</span><span>6 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="digital">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=700&q=80" alt="Teaching English over a spotty signal">
+  </div>
+  <div class="bb"><span class="cat">Digital</span><h3>Teaching English over a spotty signal</h3><p>How a WhatsApp group became the backbone of our remote tutoring pilot.</p><div class="meta"><span>Jun 2025</span><span>5 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="nutrition">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=700&q=80" alt="The kitchen that feeds three schools"></div>
+  <div class="bb"><span class="cat">Nutrition</span><h3>The kitchen that feeds three schools</h3><p>Inside the shared cooking co-op that keeps midday meals affordable at scale.</p><div class="meta"><span>May 2025</span><span>4 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="community">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=700&q=80" alt="The mothers' committee that runs the library"></div>
+  <div class="bb"><span class="cat">Community</span><h3>The mothers' committee that runs the library</h3><p>A parent-led group now manages lending hours at four of our reading rooms.</p><div class="meta"><span>Apr 2025</span><span>5 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="scholarships">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?auto=format&fit=crop&w=700&q=80" alt="From scholarship recipient to donor"></div>
+  <div class="bb"><span class="cat">Scholarships</span><h3>From scholarship recipient to donor</h3><p>A 2014 graduate now funds a seat for the student behind her.</p><div class="meta"><span>Mar 2025</span><span>4 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="libraries">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=80" alt="Building a library with no electricity"></div>
+  <div class="bb"><span class="cat">Libraries</span><h3>Building a library with no electricity</h3><p>Skylights, awnings, and the low-tech design tricks that keep reading rooms usable after dusk.</p><div class="meta"><span>Feb 2025</span><span>6 min read</span></div></div>
+</div><div class="bcard reveal" data-cat="teachers">
+  <div class="ph"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=700&q=80" alt="Why we don't parachute in teachers"></div>
+  <div class="bb"><span class="cat">Teachers</span><h3>Why we don't parachute in teachers</h3><p>The case for hiring locally, even when it means a longer runway before a school can open.</p><div class="meta"><span>Jan 2025</span><span>5 min read</span></div></div>
+</div>
+    </div>
+    <div class="pagi"><button class="active">1</button><button>2</button><button>3</button></div>
+  </div>
+</section>
+
+<section class="partners" style="padding:60px 0 90px;border-bottom:none;">
+  <div class="wrap">
+    <span class="p-label" style="margin-bottom:22px;">Browse by topic</span>
+    <div class="filter-row" style="justify-content:center;">
+      <a href="#" class="filter-btn" style="text-decoration:none;">Teachers</a>
+      <a href="#" class="filter-btn" style="text-decoration:none;">Construction</a>
+      <a href="#" class="filter-btn" style="text-decoration:none;">Libraries</a>
+      <a href="#" class="filter-btn" style="text-decoration:none;">Nutrition</a>
+      <a href="#" class="filter-btn" style="text-decoration:none;">Digital classrooms</a>
+      <a href="#" class="filter-btn" style="text-decoration:none;">Community</a>
+      <a href="#" class="filter-btn" style="text-decoration:none;">Scholarships</a>
+      <a href="#" class="filter-btn" style="text-decoration:none;">Transparency</a>
+      <a href="#" class="filter-btn" style="text-decoration:none;">Monsoon design</a>
+      <a href="#" class="filter-btn" style="text-decoration:none;">Alumni</a>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="news">
+  <div class="wrap news-grid">
+    <div><h3>Get field updates in your inbox</h3><p>One short email a month — no spam, just classrooms.</p></div>
+    <form onsubmit="event.preventDefault();this.querySelector('button').textContent='Subscribed ✓';">
+      <input type="email" placeholder="you@email.com" required>
+      <button type="submit" class="btn btn-clay">Subscribe</button>
+    </form>
+  </div>
+</section> -->
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="./stackly.png" alt="Stackly">
+        <div class="foot-tag">SCHOOLS. TEACHERS. FUTURES.</div>
+        <p>Stackly Rural Education Foundation builds schools and trains teachers across rural India, one village at a time.</p>
+        <div class="social" style="margin-top:20px;">
+          <a href="error.html" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M22 12.06C22 6.51 17.52 2 12 2S2 6.51 2 12.06C2 17.06 5.66 21.2 10.44 21.95V14.9H7.9V12.06h2.54V9.85c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.23.2 2.23.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.44 2.84h-2.34v7.05C18.34 21.2 22 17.06 22 12.06z"/>
+            </svg>
+          </a>
+          <a href="error.html" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/>
+            </svg>
+          </a>
+          <a href="error.html" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M12 2c2.72 0 3.06.01 4.12.06 1.06.05 1.79.22 2.43.47.66.26 1.21.6 1.76 1.15.55.55.89 1.1 1.15 1.76.25.64.42 1.37.47 2.43.05 1.06.06 1.4.06 4.12s-.01 3.06-.06 4.12c-.05 1.06-.22 1.79-.47 2.43a4.9 4.9 0 0 1-1.15 1.76 4.9 4.9 0 0 1-1.76 1.15c-.64.25-1.37.42-2.43.47-1.06.05-1.4.06-4.12.06s-3.06-.01-4.12-.06c-1.06-.05-1.79-.22-2.43-.47a4.9 4.9 0 0 1-1.76-1.15 4.9 4.9 0 0 1-1.15-1.76c-.25-.64-.42-1.37-.47-2.43C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.12c.05-1.06.22-1.79.47-2.43.26-.66.6-1.21 1.15-1.76A4.9 4.9 0 0 1 5.44 2.53c.64-.25 1.37-.42 2.43-.47C8.94 2.01 9.28 2 12 2zm0 1.8c-2.67 0-2.99.01-4.04.06-.87.04-1.34.18-1.65.3-.42.16-.71.35-1.02.66-.31.31-.5.6-.66 1.02-.12.31-.26.78-.3 1.65-.05 1.05-.06 1.37-.06 4.04s.01 2.99.06 4.04c.04.87.18 1.34.3 1.65.16.42.35.71.66 1.02.31.31.6.5 1.02.66.31.12.78.26 1.65.3 1.05.05 1.37.06 4.04.06s2.99-.01 4.04-.06c.87-.04 1.34-.18 1.65-.3.42-.16.71-.35 1.02-.66.31-.31.5-.6.66-1.02.12-.31.26-.78.3-1.65.05-1.05.06-1.37.06-4.04s-.01-2.99-.06-4.04c-.04-.87-.18-1.34-.3-1.65a2.73 2.73 0 0 0-.66-1.02 2.73 2.73 0 0 0-1.02-.66c-.31-.12-.78-.26-1.65-.3-1.05-.05-1.37-.06-4.04-.06zm0 3.7a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 1.8a2.7 2.7 0 1 0 0 5.4 2.7 2.7 0 0 0 0-5.4zm5.73-1.98a1.05 1.05 0 1 1-2.1 0 1.05 1.05 0 0 1 2.1 0z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="foot-col"><h4>Explore</h4><div class="rule"></div><a href="index.html">Home</a><a href="about.html">About us</a><a href="services.html">Services</a><a href="program.html">Programs</a><a href="blog.html">Blog</a></div>
+      <div class="foot-col fc1"><h4>Get Involved</h4><div class="rule"></div><a href="contact.html#donate">Donate</a><a href="contact.html">Volunteer</a><a href="contact.html">Partner with us</a><a href="contact.html">Sponsor a school</a><a href="contact.html">Corporate giving</a></div>
+      <div class="foot-col fc2"><h4>Foundation</h4><div class="rule"></div><a href="about.html">Our story</a><a href="about.html">Careers</a><a href="blog.html">Press &amp; media</a><a href="contact.html">Terms of service</a><a href="contact.html">Privacy policy</a></div>
+      <div class="foot-col foot-contact">
+        <h4>Get In Touch</h4><div class="rule"></div>
+        <a href="mailto:hello@stacklyref.org">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6l9 7 9-7"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+          hello@stacklyref.org
+        </a>
+        <a href="tel:+911145678900">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 2 6a2 2 0 0 1 2-2z"/></svg>
+          +91 11 4567 8900
+        </a>
+        <a href="contact.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
+          14 Lodhi Estate, New Delhi
+        </a>
+        <div class="foot-cta">
+          <div class="cta-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l9 4.5-9 4.5-9-4.5L12 3z"/><path d="M7 10.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-5.5"/></svg>
+          </div>
+          <h5>Become a Donor.<br>Change a Life.</h5>
+          <p>See exactly where your contribution goes and start giving today.</p>
+          <a href="contact.html#donate" class="arrow">Start giving <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="foot-trust">
+      <div class="trust-badge">
+        <div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div><strong>Trusted by Thousands</strong><span>Verified impact. Registered nonprofit.</span></div>
+      </div>
+      <div class="foot-stat-row">
+        <div class="foot-stat-item"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M5 21V9l7-5 7 5v12M9 21v-6h6v6"/></svg></div><strong>150+</strong><span>Schools Built</span></div>
+        <div class="foot-stat-item"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><strong>12,000+</strong><span>Children Reached</span></div>
+        <div class="foot-stat-item"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><strong>300+</strong><span>Teachers Trained</span></div>
+        <div class="foot-stat-item"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z"/></svg></div><strong>8+</strong><span>States Covered</span></div>
+      </div>
+      <div class="foot-newsletter">
+        <h5>Stay Updated</h5>
+        <p>Get field updates and impact stories from our programs.</p>
+        <form onsubmit="event.preventDefault();this.querySelector('button').textContent='Subscribed ✓';">
+          <input type="email" placeholder="Enter your email" required>
+          <button type="submit" class="btn btn-clay">Subscribe</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© 2026 Stackly Rural Education Foundation. All rights reserved. · Registered charity no. RE/2014/0042</span>
+      <div class="pay">
+        <span>Secure Payments</span>
+        <div class="pay-icons"><span>VISA</span><span>MC</span><span>RuPay</span><span>UPI</span></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+
+gsap.registerPlugin(ScrollTrigger);
+
+window.addEventListener('load',()=>{
+  const bar=document.querySelector('#preloader .bar span');
+  gsap.to(bar,{width:'100%',duration:1,ease:'power2.inOut'});
+  gsap.to('#preloader',{opacity:0,duration:.6,delay:.9,onComplete:()=>{document.getElementById('preloader').style.display='none';if(typeof pageIn==='function')pageIn();}});
+});
+
+function splitChars(el){
+  const txt=el.textContent;
+  el.textContent='';
+  txt.split('').forEach(ch=>{
+    const s=document.createElement('span');
+    s.style.display='inline-block';
+    s.textContent=ch===' '?'\u00A0':ch;
+    el.appendChild(s);
+  });
+  return el.querySelectorAll('span');
+}
+document.querySelectorAll('.split-line span').forEach(line=>{splitChars(line);});
+
+const header=document.getElementById('siteheader');
+if(header){window.addEventListener('scroll',()=>{header.classList.toggle('scrolled',window.scrollY>40);});}
+
+const hamb=document.getElementById('hamb'),mm=document.getElementById('mobilemenu'),mmClose=document.getElementById('mmClose');
+if(hamb&&mm){
+  hamb.addEventListener('click',()=>{mm.classList.toggle('open');});
+  mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mm.classList.remove('open')));
+  if(mmClose){mmClose.addEventListener('click',()=>mm.classList.remove('open'));}
+}
+
+gsap.utils.toArray('.reveal').forEach(el=>{
+  gsap.to(el,{opacity:1,y:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 88%'}});
+});
+
+document.querySelectorAll('[data-count]').forEach(el=>{
+  const target=parseFloat(el.dataset.count);
+  const suffix=el.dataset.suffix||'';
+  const obj={v:0};
+  ScrollTrigger.create({trigger:el,start:'top 90%',once:true,onEnter:()=>{
+    gsap.to(obj,{v:target,duration:1.8,ease:'power2.out',onUpdate:()=>{el.textContent=Math.floor(obj.v).toLocaleString()+suffix;},onComplete:()=>{el.textContent=target.toLocaleString()+suffix;}});
+  }});
+});
+
+function pageIn(){
+  gsap.timeline({defaults:{ease:'power4.out'}})
+    .from('.pagehero .split-line span span',{yPercent:120,rotate:6,stagger:0.012,duration:1})
+    .from('.crumb',{opacity:0,y:14,duration:.6},'-=0.9');
+  gsap.to('.pagehero .b1',{y:40,x:20,duration:7,yoyo:true,repeat:-1,ease:'sine.inOut'});
+}
+document.querySelectorAll('.pagehero h1 .split-line span').forEach(line=>{splitChars(line);});
+
+const fbtns=document.querySelectorAll('.filter-btn'),cards=document.querySelectorAll('#bgrid .bcard');
+fbtns.forEach(b=>b.addEventListener('click',()=>{
+  fbtns.forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  const f=b.dataset.f;
+  cards.forEach(c=>{
+    const show=f==='all'||c.dataset.cat===f;
+    gsap.to(c,{opacity:show?1:0,scale:show?1:.92,duration:.35,onStart:()=>{if(show)c.style.display='block';},onComplete:()=>{if(!show)c.style.display='none';}});
+  });
+}));
+document.querySelectorAll('.pagi button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.pagi button').forEach(x=>x.classList.remove('active'));b.classList.add('active');}));
+</script>
+</body>
+</html>
