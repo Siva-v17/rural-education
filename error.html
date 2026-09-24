@@ -255,8 +255,11 @@
   if (window.gsap) {
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
     tl.to(".seed-row", { opacity: 1, y: 0, duration: 0.5 }, 0.1)
-      .from(".code", { opacity: 0, y: 26, scale: 0.94, duration: 0.7 }, 0.15)
-      .to(".code", { opacity: 1 }, 0.15)
+      .fromTo(".code",
+        { opacity: 0, y: 26, scale: 0.94 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.7 },
+        0.15
+      )
       .to("h1", { opacity: 1, duration: 0.55 }, 0.4)
       .to("p.lede", { opacity: 1, duration: 0.55 }, 0.5)
       .to(".actions", { opacity: 1, duration: 0.55 }, 0.62)
